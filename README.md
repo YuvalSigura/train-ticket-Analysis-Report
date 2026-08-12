@@ -80,7 +80,7 @@ This repository documents an **end-to-end application & API security assessment*
 ---
 
 ## 📂 Detailed Findings
-Detailed PoCs, screenshots, and remediation steps are included in [`docs/train-report.pdf`](./docs/train-report.pdf).  
+Detailed PoCs, screenshots, and remediation steps are included in [`train-report.pdf`](train-report.pdf).  
 Each finding contains:
 - **Description** of the issue.  
 - **Proof of Concept (PoC)**.  

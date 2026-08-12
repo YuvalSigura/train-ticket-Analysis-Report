@@ -1,109 +1,65 @@
-# 🚆 Train Ticket Security Assessment (OWASP Top 10)
+# Train Ticket — Penetration Testing & Security Assessment
 
-[![OWASP](https://img.shields.io/badge/OWASP-Top%2010-blue)](https://owasp.org/)
-[![Pentest Report](https://img.shields.io/badge/Report-Penetration%20Testing-red)](./docs/train-report.pdf)
-[![Docker](https://img.shields.io/badge/Infra-Docker%2FKubernetes-green)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-Educational-lightgrey)]()
+Public portfolio project demonstrating hands-on web/API security assessment, vulnerability validation, proof-of-concept (PoC) reporting, impact analysis, and remediation guidance against the open-source FudanSELab Train Ticket microservices application.
 
----
+**Report author:** Yuval Sigura  
+**Assessment report:** [train-report.pdf](./train-report.pdf)  
+**Original project:** https://github.com/FudanSELab/train-ticket
 
-## 📖 Description
-A large-scale, distributed **train ticket booking system** built with **41 microservices**, handling user management, ticket purchasing, and system administration.  
-Each microservice is designed for **scalability, fault tolerance, and maintainability**.
+## What this project demonstrates
 
-This repository documents an **end-to-end application & API security assessment** against the system, focusing on the **OWASP Top 10** with **PoCs, remediation code fixes, and a prioritized mitigation roadmap**.
+- Web and API penetration-testing methodology
+- Vulnerability assessment and manual validation
+- Reproducible technical evidence and PoC demonstrations
+- OWASP Top 10:2021 mapping
+- Security impact and risk prioritization
+- Actionable remediation guidance
+- SAST, DAST, network reconnaissance, and DevSecOps security tooling
 
-🔗 [Original project (FudanSELab/train-ticket)](https://github.com/FudanSELab/train-ticket)  
-✍️ Report author: **Yuval Sigura**
+## Selected findings
 
----
+| Finding | OWASP Top 10:2021 | Evidence status |
+|---|---|---|
+| Broken Access Control / IDOR | A01 — Broken Access Control | Confirmed PoC |
+| CSRF protection disabled | A01 — Broken Access Control | Configuration evidence / PoC |
+| Server-side injection behavior | A03 — Injection | Validated behavior |
+| Client-side injection / XSS risk | A03 — Injection | Code/configuration evidence |
+| Security headers, CORS and cookie issues | A05 — Security Misconfiguration | Configuration evidence |
+| Hardcoded credentials | A07 — Identification and Authentication Failures | Source-code evidence / PoC |
+| SSRF-related risk | A10 — Server-Side Request Forgery | Security analysis; not presented as a confirmed exploit |
 
-## 🔎 Project in 30 seconds
-- **41 microservices**: Java (Spring Boot/Cloud), Node.js (Express), Python (Django), Go (Webgo).  
-- **Databases**: MongoDB, MySQL.  
-- **Deployment**: Docker, Kubernetes, docker-compose.  
-- **SAST**: SonarQube, CodeQL, Docker Scout.  
-- **DAST/Manual**: Burp Suite Pro, Nmap.  
-- **Recon**: Shodan.  
-- **Output**: professional pentest report with PoCs, code fixes, and remediation roadmap.
+The public report deliberately distinguishes confirmed exploitation evidence from analysis-only findings.
 
----
+## Tools and techniques
 
-## 📚 Table of Contents
-- [Scope](#scope)
-- [Methodology](#methodology)
-- [Executive Summary of Findings](#executive-summary-of-findings)
-- [Detailed Findings](#detailed-findings)
-- [Remediation Roadmap](#remediation-roadmap)
-- [How to Reproduce (Quick Start)](#how-to-reproduce-quick-start)
-- [Artifacts](#artifacts)
-- [Ethics & Disclaimer](#ethics--disclaimer)
-- [Contact](#contact)
+- Burp Suite Professional
+- Nmap
+- SonarQube
+- CodeQL
+- Docker Scout
+- Shodan
+- Manual web/API testing
+- Static analysis and vulnerability scanning
+- Impact analysis and remediation reporting
 
----
+## Report structure
 
-## 🎯 Scope
-- **In scope**: public APIs & internal services of the Train-Ticket microservices system.  
-- **Out of scope**: third-party SaaS unrelated to the repo, social engineering, production data.
+The report includes:
 
----
+1. Executive summary
+2. Scope and methodology
+3. Risk overview
+4. Detailed findings
+5. Technical evidence / PoC where available
+6. Impact analysis
+7. Remediation recommendations
+8. OWASP/CWE taxonomy notes
+9. Tooling and references
 
-## 🛠 Methodology
+## Portfolio note
 
-### SAST
-- **SonarQube**: code vulnerabilities/bugs/smells across Java/JS/Python/Go.  
-- **CodeQL (GitHub Actions)**: security queries per language.  
-- **Docker Scout**: base image & dependency CVEs.
+This repository is a public, sanitized portfolio artifact intended to demonstrate penetration-testing workflow and technical reporting. Sensitive or unnecessary live-target details are not included.
 
-### DAST & Manual Testing
-- **Burp Suite Pro**: intercept, active/GA scans, manual exploitation.  
-- **Nmap**: service discovery & version enumeration.  
-- **Shodan**: external attack-surface reconnaissance.
+## Ethics
 
-### Infra/Orchestration
-- Local deployment via **Docker/Kubernetes** for realistic end-to-end testing.  
-
----
-
-## 📊 Executive Summary of Findings
-
-| ID   | Category (OWASP 2021)        | Affected Area            | Severity  | Status |
-|------|-------------------------------|--------------------------|-----------|--------|
-| F-01 | Injection (A03)              | `/api/v1/verifycode`     | 🔴 High   | Open   |
-| F-02 | Client-Side Injection (A04)  | `client_collect.js`      | 🔴 High   | Open   |
-| F-03 | Broken Access Control (IDOR) | `orderservice` endpoints | 🔴 High   | Open   |
-| F-04 | CSRF Disabled (A05)          | Spring Security config   | 🔴 High   | Open   |
-| F-05 | Hardcoded Credentials (A02)  | Source code              | 🟣 Critical | Open |
-| F-06 | SSRF (A10)                   | URL fetch logic          | 🔴 High   | Open   |
-| F-07 | Misconfig (CORS, Headers)    | Multiple services        | 🟠 Medium | Open   |
-
----
-
-## 📂 Detailed Findings
-Detailed PoCs, screenshots, and remediation steps are included in [`train-report.pdf`](train-report.pdf).  
-Each finding contains:
-- **Description** of the issue.  
-- **Proof of Concept (PoC)**.  
-- **Code snippet** or vulnerable config.  
-- **Impact assessment**.  
-- **Remediation guidance** with sample fixes.
-
----
-
-## 🛡 Remediation Roadmap
-1. **Immediate**: revoke hardcoded credentials, enable CSRF protection, patch SSRF endpoints.  
-2. **Short-term**: add security headers, restrict CORS, sanitize cookies and inputs.  
-3. **Mid-term**: CI/CD integration with SonarQube + CodeQL.  
-4. **Long-term**: periodic penetration testing and cloud security posture reviews.
-
----
-
-## ⚡ How to Reproduce (Quick Start)
-
-### 1) Deploy locally
-```bash
-# Option A: docker-compose (recommended for quick spin-up)
-docker compose up -d
-
-# Option B: Kubernetes (if you have manifests)
-kubectl apply -f k8s/
+Testing and analysis are intended for authorized, educational, and research environments only. The assessed application is an open-source project used as a security-testing target in a controlled context.
